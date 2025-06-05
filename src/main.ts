@@ -1,3 +1,4 @@
 import { Game } from "./game"
 
-new Game()
+var game = new Game()
+game.update()

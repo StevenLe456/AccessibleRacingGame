@@ -1,34 +1,28 @@
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from "@babylonjs/core";
+import { Engine, Scene, FreeCamera, Vector3, HemisphericLight, Mesh, MeshBuilder } from "@babylonjs/core"
 
 export class Game {
+    private canvas
+    private engine
+    private scene
+
     constructor() {
         // get canvas
-        var canvas = <HTMLCanvasElement> document.getElementById("gameCanvas")
+        this.canvas = <HTMLCanvasElement> document.getElementById("gameCanvas")
 
         // initialize babylon scene and engine
-        var engine = new Engine(canvas, true);
-        var scene = new Scene(engine);
+        this.engine = new Engine(this.canvas, true)
+        this.scene = new Scene(this.engine)
 
-        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), scene);
-        camera.attachControl(canvas, true);
-        var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
-        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
+        var camera: FreeCamera = new FreeCamera("camera1", new Vector3(0, 5, -10), this.scene)
+        camera.attachControl(this.canvas, true)
+        var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), this.scene)
+        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, this.scene)
+    }
 
-        // hide/show the Inspector
-        window.addEventListener("keydown", (ev) => {
-            // Shift+Ctrl+Alt+I
-            if (ev.shiftKey && ev.ctrlKey && ev.altKey && (ev.key === "I" || ev.key === "i")) {
-                if (scene.debugLayer.isVisible()) {
-                    scene.debugLayer.hide();
-                } else {
-                    scene.debugLayer.show();
-                }
-            }
-        });
-
+    update() {
         // run the main render loop
-        engine.runRenderLoop(() => {
-            scene.render();
-        });
+        this.engine.runRenderLoop(() => {
+            this.scene.render()
+        })
     }
 }
