@@ -1,0 +1,29 @@
+{
+  "name": "accessibleracinggame",
+  "version": "1.0.0",
+  "description": "CSCE.3444 Group 6 Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "esbuild src/main.ts --bundle --sourcemap --outfile=test/src.js && cp -r public/* test/",
+    "dist": "esbuild src/main.ts --bundle --minify --output=dist/src.js && cp -r public/* dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StevenLe456/AccessibleRacingGame.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StevenLe456/AccessibleRacingGame/issues"
+  },
+  "homepage": "https://github.com/StevenLe456/AccessibleRacingGame#readme",
+  "devDependencies": {
+    "esbuild": "0.25.5",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^8.11.0",
+    "babylonjs": "^8.11.0"
+  }
+}
