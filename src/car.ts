@@ -9,11 +9,12 @@ export class Car {
     private green
     private blue
     private scene
+    private canvas
     private id
     private mesh: Mesh
     private cam: UniversalCamera
 
-    constructor(x: number, y: number, z: number, r: number, g: number, b: number, s: Scene, id: string) {
+    constructor(x: number, y: number, z: number, r: number, g: number, b: number, s: Scene, cvs: HTMLCanvasElement, id: string) {
         this.x = x
         this.y = y
         this.z = z
@@ -21,6 +22,7 @@ export class Car {
         this.green = g
         this.blue = b
         this.scene = s
+        this.canvas = cvs
         this.id = id
         var c: Color4 = new Color4(this.red, this.green, this.blue, 1.0)
         this.mesh = MeshBuilder.CreateBox("car" + this.id, {width: 1, height: 1, depth: 3, faceColors: [c, c, c, c, c, c], updatable: true}, this.scene)
@@ -28,7 +30,11 @@ export class Car {
         this.cam = new UniversalCamera("cam" + id, new Vector3(this.x, this.y + 2, this.z - 10), this.scene)
     }
 
-    update() {
+    turn_left() {
+        this.mesh.rotate(new Vector3(0, 1, 0), -0.05)
+    }
 
+    turn_right() {
+        this.mesh.rotate(new Vector3(0, 1, 0), 0.05)
     }
 }
