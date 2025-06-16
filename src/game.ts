@@ -1,4 +1,4 @@
-import { Engine, Scene, Vector3, HemisphericLight, Mesh, MeshBuilder} from "@babylonjs/core"
+import { Engine, Scene, Vector3, HemisphericLight, Mesh, MeshBuilder, ShaderMaterial} from "@babylonjs/core"
 
 import { Car } from "./car"
 import {InputHandler} from "./input"
@@ -28,6 +28,14 @@ export class Game {
 
         // initialize input handler
         this.inputty = new InputHandler()
+
+        // add shader and attach it to road
+        var rainbowMaterial = new ShaderMaterial("rainbow_road", this.scene, "./rainbow",
+        {
+            attributes: ["position"],
+            uniforms: ["worldViewProjection"]
+        })
+        track.material = rainbowMaterial
     }
 
     update() {
