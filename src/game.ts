@@ -33,8 +33,10 @@ export class Game {
     update() {
         // run the main render loop
         this.engine.runRenderLoop(() => {
-            // update game state
+            // handle input
             this.inputty.handle_input(this.car1)
+            // update game state
+            this.car1.update()
             // render game
             this.scene.render()
         })

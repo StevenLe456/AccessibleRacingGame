@@ -8,6 +8,8 @@ export class Car {
     private red
     private green
     private blue
+    private rotation
+    private velocity
     private scene
     private cvs_x
     private id
@@ -21,6 +23,8 @@ export class Car {
         this.red = r
         this.green = g
         this.blue = b
+        this.rotation = 0
+        this.velocity = 0.5
         this.scene = s
         this.cvs_x = cvs_x
         this.id = id
@@ -32,11 +36,26 @@ export class Car {
         this.cam.viewport = new Viewport(this.cvs_x, 0, 0.5, 1)
     }
 
+    update() {
+        this.x += this.velocity * Math.sin(this.rotation)
+        this.z += this.velocity * Math.cos(this.rotation)
+        this.mesh.rotation = new Vector3(0, this.rotation, 0)
+        this.mesh.position = new Vector3(this.x, this.y, this.z)
+    }
+
     turn_left() {
-        this.mesh.rotate(new Vector3(0, 1, 0), -0.05)
+        this.rotation -= 0.05
     }
 
     turn_right() {
-        this.mesh.rotate(new Vector3(0, 1, 0), 0.05)
+        this.rotation += 0.05
+    }
+
+    accelerate() {
+        this.velocity += 0.05
+    }
+
+    decelerate() {
+        this.velocity -= 0.05
     }
 }

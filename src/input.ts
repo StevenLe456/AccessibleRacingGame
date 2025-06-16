@@ -14,8 +14,14 @@ export class InputHandler {
             else if ((e as KeyboardEvent).key === "d") {
                 this.car1_state = 2
             }
+            else if ((e as KeyboardEvent).key === "w") {
+                this.car1_state = 3
+            }
+            else if ((e as KeyboardEvent).key === "s") {
+                this.car1_state = 4
+            }
             else {
-                
+                // pass
             }
         })
 
@@ -33,8 +39,14 @@ export class InputHandler {
             // turn car to the right
             car1.turn_right()
         }
+        else if (this.car1_state == 3) {
+            car1.accelerate()
+        }
+        else if (this.car1_state == 4) {
+            car1.decelerate()
+        }
         else {
-
+            // pass
         }
     }
 }
