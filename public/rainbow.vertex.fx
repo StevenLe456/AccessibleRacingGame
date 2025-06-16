@@ -7,9 +7,9 @@ attribute vec3 position;
 uniform mat4 worldViewProjection;
 
 // Varyings
-varying float factor;
+varying float z;
 
 void main(void) {
-    factor = -position.z * 0.05 + 0.05;
+    z = floor(position.z);
     gl_Position = worldViewProjection * vec4(position, 1.0);
 }

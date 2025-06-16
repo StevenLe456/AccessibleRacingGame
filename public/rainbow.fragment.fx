@@ -1,18 +1,32 @@
 precision highp float;
 
 // Varyings
-varying float factor;
+varying float z;
 
 vec3 rainbow(float x)
 {
-	float level = floor(x * 6.0);
-	float r = float(level <= 2.0) + float(level > 4.0) * 0.5;
-	float g = max(1.0 - abs(level - 2.0) * 0.5, 0.0);
-	float b = (1.0 - (level - 4.0) * 0.5) * float(level >= 4.0);
-	return vec3(r, g, b);
+	int i = int(x);
+	if ((i % 60) / 10 == 0) {
+		return vec3(1.0, 0.0, 0.0);
+	}
+	else if ((i % 60) / 10 == 1) {
+		return vec3(1.0, 0.5, 0.0);
+	}
+	else if ((i % 60) / 10 == 2) {
+		return vec3(1.0, 1.0, 0.0);
+	}
+	else if ((i % 60) / 10 == 3) {
+		return vec3(0.0, 1.0, 0.0);
+	}
+	else if ((i % 60) / 10 == 4) {
+		return vec3(0.0, 0.0, 1.0);
+	}
+	else {
+		return vec3(0.5, 0.0, 0.5);
+	}
 }
 
 void main(void) {
-    gl_FragColor = vec4(rainbow(factor), 1.0);
+    gl_FragColor = vec4(rainbow(z), 1.0);
 }
 

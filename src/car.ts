@@ -41,6 +41,7 @@ export class Car {
         this.z += this.velocity * Math.cos(this.rotation)
         this.mesh.rotation = new Vector3(0, this.rotation, 0)
         this.mesh.position = new Vector3(this.x, this.y, this.z)
+        this.cam.position = new Vector3(this.cam.position.x, this.cam.position.y, this.z - 10);
     }
 
     turn_left() {
