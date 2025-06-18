@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@babylonjs/core": "^8.11.0",
+    "@tensorflow/tfjs": "^4.22.0",
     "babylonjs": "^8.11.0"
   }
 }
