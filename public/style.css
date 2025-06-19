@@ -1,24 +1,30 @@
 html {
+    padding: 0%;
     margin: 0%;
     width: 100%;
     height: 100%;
 }
 body {
+    padding: 0%;
     margin: 0%;
     width: 100%;
     height: 100%;
 }
 canvas {
+    padding: 0%;
     margin: 0%;
     width: 100%;
     height: 80%;
     z-index: 1;
 }
 video {
+    padding: 0%;
+    margin: 0%;
     width: 100%;
     height: 100%;
 }
 #hud {
+    padding: 0%;
     margin: 0%;
     width: 100%;
     height: 20%;
@@ -26,18 +32,21 @@ video {
     flex-direction: row;
 }
 #player1 {
+    padding: 0%;
     margin: 0%;
     width: 30%;
     height: 100%;
     order: 1;
 }
 #webcam {
+    padding: 0%;
     margin: 0%;
     width: 40%;
     height: 100%;
     order: 2;
 }
 #player2 {
+    padding: 0%;
     margin: 0%;
     width: 30%;
     height: 100%;
@@ -47,9 +56,9 @@ video {
     position: absolute;
     z-index: 2;
     border-left: 6px solid black;
-    height: 100%;
+    height: 80%;
     position: absolute;
     left: 50%;
     margin-left: -3px;
-    top: 0;
+    top: 20%;
 }
