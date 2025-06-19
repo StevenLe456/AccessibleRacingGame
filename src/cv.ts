@@ -6,6 +6,7 @@ import * as face from '@tensorflow-models/face-landmarks-detection'
 export async function load(): Promise<face.FaceLandmarksDetector> {
     const model = face.SupportedModels.MediaPipeFaceMesh
     const detectorConfig: face.MediaPipeFaceMeshMediaPipeModelConfig = {
+        maxFaces: 1, // Change to 2 later down the road
         runtime: 'mediapipe',
         solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh',
         refineLandmarks: false

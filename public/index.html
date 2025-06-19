@@ -6,19 +6,21 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div id="hud">
-            <div id="player1">
-                <p>Player One</p>
+        <div id="game">
+            <div id="hud">
+                <div id="player1">
+                    <p>Player One</p>
+                </div>
+                <div id="webcam">
+                    <video autoplay="true" id="videoElement"></video>
+                </div>
+                <div id="player2">
+                    <p>Player Two</p>
+                </div>
             </div>
-            <div id="webcam">
-                <video autoplay="true" id="videoElement"></video>
-            </div>
-            <div id="player2">
-                <p>Player Two</p>
-            </div>
+            <div class="vl"></div>
+            <canvas id="gameCanvas"></canvas>
         </div>
-        <div class="vl"></div>
-        <canvas id="gameCanvas"></canvas>
         <script src="src.js"></script>
     </body>
 </html>
