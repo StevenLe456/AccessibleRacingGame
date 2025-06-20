@@ -29,7 +29,7 @@ export function initVideo(): HTMLVideoElement {
     return video
 }
 
-export async function faceMesh(detector: face.FaceLandmarksDetector, video: HTMLVideoElement): Promise<Object[]> {
+export async function faceMesh(detector: face.FaceLandmarksDetector, video: HTMLVideoElement): Promise<face.Face[]> {
     const estimationConfig = {flipHorizontal: false}
     const faces = await detector.estimateFaces(video, estimationConfig)
     return faces
