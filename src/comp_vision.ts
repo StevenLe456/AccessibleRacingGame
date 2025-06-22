@@ -9,7 +9,7 @@ export async function initFaceModel() {
     const detectorConfig = <faceDetection.MediaPipeFaceDetectorMediaPipeModelConfig> {
         runtime: 'mediapipe',
         maxFaces: 1,
-        solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection',
+        solutionPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/face_detection@0.4.1628005423',
     };
     return await faceDetection.createDetector(model, detectorConfig);
 }
