@@ -1,12 +1,10 @@
 export class Head {
-    private forward
-    private right
-    private left
-    private up
-    private down
+    public right
+    public left
+    public up
+    public down
 
-    constructor(f: Object[], r: Object[], l: Object[], u: Object[], d: Object[]) {
-        this.forward = f
+    constructor(r: number, l: number, u: number, d: number) {
         this.right = r
         this.left = l
         this.up = u

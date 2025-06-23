@@ -10,22 +10,31 @@ body {
     width: 100%;
     height: 100%;
 }
-/*
-canvas {
+#gameCanvas {
     padding: 0%;
     margin: 0%;
     width: 100%;
     height: 80%;
     z-index: 1;
 }
+#stream {
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    margin: 0px;
+    z-index: -1;
+}
 video {
     padding: 0%;
     margin: 0%;
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
-*/
 h1 {
     text-align: center;
 }
@@ -40,7 +49,6 @@ img {
     margin: 0%;
     width: 100%;
     height: 100%;
-    display: none;
 }
 #hud {
     padding: 0%;
@@ -63,6 +71,7 @@ img {
     width: 20%;
     height: 100%;
     order: 2;
+    position: relative;
 }
 #player2 {
     padding: 0%;
