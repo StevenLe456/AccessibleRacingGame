@@ -1,4 +1,3 @@
-import '@mediapipe/face_detection';
 import '@tensorflow/tfjs-core';
 // Adds the WebGL backend to the global backend registry.
 import '@tensorflow/tfjs-backend-webgl';
