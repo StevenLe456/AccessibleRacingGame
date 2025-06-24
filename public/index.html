@@ -6,6 +6,18 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <div id="head-calibration">
+            <div id="instruction-bar">
+                <h1 id="instructions">Look towards the camera with your head held upright.</h1>
+                <img src="img/head_still.png" alt="head">
+                <video autoplay="true" id="webby"></video>
+            </div>
+            <div id="cam-screen">
+                <canvas id="left"></canvas>
+                <div id="divider"></div>
+                <canvas id="right"></canvas>
+            </div>
+        </div>
         <div id="game">
             <div id="hud">
                 <div id="player1">
