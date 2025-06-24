@@ -1,8 +1,8 @@
 import { Engine, Scene, Vector3, HemisphericLight, Mesh, MeshBuilder, ShaderMaterial} from "@babylonjs/core"
-
 import { Car } from "./car"
 import { InputHandler } from "./input"
 import { Head } from "./head"
+import * as faceDetection from '@tensorflow-models/face-detection';
 
 export class Game {
     private canvas
@@ -14,7 +14,7 @@ export class Game {
     private head1: Head
     private inputty: InputHandler
 
-    constructor(head1: Head, webcam: HTMLVideoElement, camvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+    constructor(head1: Head, model: Promise<faceDetection.FaceDetector> , webcam: HTMLVideoElement, camvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
         // get canvas
         this.canvas = <HTMLCanvasElement> document.getElementById("gameCanvas")
         this.camvas = camvas
@@ -31,7 +31,7 @@ export class Game {
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), this.scene)
 
         // initialize input handler
-        this.inputty = new InputHandler(webcam, ctx)
+        this.inputty = new InputHandler(model, webcam, ctx)
         this.head1 = head1
 
         // add shader and attach it to road

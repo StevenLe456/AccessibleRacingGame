@@ -1,6 +1,7 @@
 import { Car } from "./car"
 import { getFace, initFaceModel } from "./comp_vision"
 import { Head } from "./head"
+import * as faceDetection from '@tensorflow-models/face-detection';
 
 export class InputHandler {
     private car1_state: number
@@ -8,9 +9,9 @@ export class InputHandler {
     private video: HTMLVideoElement
     private ctx
 
-    constructor(video: HTMLVideoElement, ctx: CanvasRenderingContext2D) {
+    constructor(model: Promise<faceDetection.FaceDetector>, video: HTMLVideoElement, ctx: CanvasRenderingContext2D) {
         this.car1_state = 0
-        this.model = initFaceModel()
+        this.model = model
         this.video = video
         this.ctx = ctx
     }
