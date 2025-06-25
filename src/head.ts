@@ -14,7 +14,7 @@ export class Head {
         for (let j = 0; j < this.means.length; j++) {
             let a = this.means[j]
             let b = this.vars[j]
-            let posterior = 0.2
+            let posterior = j == 0 ? 0.5 : 0.25
             for (let i = 0; i < this.means.length; i++) {
                 posterior *= gaussian_dist(x[i], a[i], b[i])
             }

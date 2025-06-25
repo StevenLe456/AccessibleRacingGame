@@ -32,7 +32,8 @@
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-wasm": "^4.22.0",
     "@tensorflow/tfjs-backend-webgl": "^4.22.0",
-    "babylonjs": "^8.11.0",
+    "babylonjs": "^8.13.0",
+    "babylonjs-loaders": "^8.13.0",
     "ndarray": "^1.0.19"
   }
 }

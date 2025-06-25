@@ -126,7 +126,7 @@ function main() {
     else if (hc_state == 10) {
         instruction.innerHTML = "Relax your head. Currently calibrating controls. Will redirect afterwards."
         pic.src = "img/head_still.png"
-        tim += 45
+        tim += 60
     }
     else if (hc_state == 11) {
         // Do Gaussian Naive Bayes to calculate head stuff
@@ -147,14 +147,14 @@ function main() {
         let gamey: HTMLElement = <HTMLElement> document.getElementById("game")
         gamey.style.display = "block"
         navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {video.srcObject = stream})
-        tim = 45 * 5
+        tim = 120 * 3
     }
-    if (tim >= 45 * 5) {
+    if (tim >= 120 * 3) {
         tim = 0
         hc_state++
     }
     if (hc_state < 12) {
-        setTimeout(main, 1000 / 45)
+        setTimeout(main, 1000 / 120)
     }
     else {
         // initialize game
