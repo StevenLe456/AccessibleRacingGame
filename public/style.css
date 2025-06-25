@@ -59,6 +59,43 @@ h1 {
     width: 40%;
     height: 100%;
     order: 1;
+    display: flex;
+    flex-direction: row;
+}
+#up {
+    padding: 0%;
+    margin: 0%;
+    width: 8%;
+    height: 100%;
+    order: 1;  
+}
+#down {
+    padding: 0%;
+    margin: 0%;
+    width: 8%;
+    height: 100%;
+    order: 2;  
+}
+#lefty {
+    padding: 0%;
+    margin: 0%;
+    width: 8%;
+    height: 100%;
+    order: 3;  
+}
+#righty {
+    padding: 0%;
+    margin: 0%;
+    width: 8%;
+    height: 100%;
+    order: 4;  
+}
+#display {
+    padding: 0%;
+    margin: 0%;
+    width: 8%;
+    height: 100%;
+    order: 5;  
 }
 #webcam {
     padding: 0%;
@@ -114,7 +151,7 @@ h1 {
     height: 98%;
     order: 1;
 }
-img {
+#clue {
     padding: 1%;
     margin: 0%;
     width: 18%;
@@ -152,4 +189,11 @@ img {
     height: 100%;
     object-fit: fill;
     order: 3;
+}
+#ctrl {
+    top: 20%;
+    left: 0%;
+    width: 8%;
+    height: 8%;
+    position: absolute;
 }

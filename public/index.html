@@ -19,7 +19,11 @@
         <div id="game">
             <div id="hud">
                 <div id="player1">
-                    <p>Player One</p>
+                    <p id="up">🢁</p>
+                    <p id="down">🢃</p>
+                    <p id="lefty">🢀</p>
+                    <p id="righty">🢂</p>
+                    <p id="display">Speed:</p>
                 </div>
                 <div id="webcam">
                     <video autoplay="true" id="videoElement"></video>
@@ -31,6 +35,7 @@
             </div>
             <div class="vl"></div>
             <canvas id="gameCanvas"></canvas>
+            <img src="img/controls.png" alt="controls" id="ctrl">
         </div>
         <script src="src.js"></script>
     </body>

@@ -9,6 +9,10 @@ export class InputHandler {
     private model
     private video: HTMLVideoElement
     private ctx
+    private up;
+    private down;
+    private left;
+    private right;
 
     constructor(model: Promise<faceDetection.FaceDetector>, video: HTMLVideoElement, ctx: CanvasRenderingContext2D) {
         this.car1_state_x = 0
@@ -16,6 +20,10 @@ export class InputHandler {
         this.model = model
         this.video = video
         this.ctx = ctx
+        this.up = <HTMLElement> document.getElementById("up")
+        this.down = <HTMLElement> document.getElementById("down")
+        this.left = <HTMLElement> document.getElementById("lefty")
+        this.right = <HTMLElement> document.getElementById("righty")
     }
 
     async update(canvas: HTMLCanvasElement, head1: Head) {
@@ -37,27 +45,31 @@ export class InputHandler {
     handle_input(car1: Car) {
         if (this.car1_state_x == 1) {
             car1.turn_left()
-            console.log("left")
+            this.left.style.backgroundColor = "pink"
+            this.right.style.backgroundColor = "white"
         }
         else if (this.car1_state_x == 2) {
-            car1.turn_right
-            console.log("right")
+            car1.turn_right()
+            this.left.style.backgroundColor = "white"
+            this.right.style.backgroundColor = "pink"
         }
         else {
-            // pass
-            console.log("no turn")
+            this.left.style.backgroundColor = "white"
+            this.right.style.backgroundColor = "white"
         }
         if (this.car1_state_y == 1) {
             car1.accelerate()
-            console.log("go fast")
+            this.up.style.backgroundColor = "pink"
+            this.down.style.backgroundColor = "white"
         }
         else if (this.car1_state_y == 2) {
             car1.decelerate()
-            console.log("go slow")
+            this.up.style.backgroundColor = "white"
+            this.down.style.backgroundColor = "pink"
         }
         else {
-            // pass
-            console.log("no speed change")
+            this.up.style.backgroundColor = "white"
+            this.down.style.backgroundColor = "white"
         }
     }
 }
