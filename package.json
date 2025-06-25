@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/StevenLe456/AccessibleRacingGame#readme",
   "devDependencies": {
+    "@types/node": "^24.0.4",
     "esbuild": "0.25.5",
     "typescript": "^5.8.3"
   },
@@ -31,6 +32,7 @@
     "@tensorflow/tfjs": "^4.22.0",
     "@tensorflow/tfjs-backend-wasm": "^4.22.0",
     "@tensorflow/tfjs-backend-webgl": "^4.22.0",
-    "babylonjs": "^8.11.0"
+    "babylonjs": "^8.11.0",
+    "ndarray": "^1.0.19"
   }
 }
