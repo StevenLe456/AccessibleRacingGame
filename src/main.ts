@@ -17,7 +17,7 @@ const l_ctx = <CanvasRenderingContext2D> lefty.getContext('2d')
 const ctx = <CanvasRenderingContext2D> canvas.getContext('2d')
 let arr: Promise<number[]> = navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {other_video.srcObject = stream; let {width, height} = stream.getVideoTracks()[0].getSettings(); return <number[]> [width, height];})
 let model = initFaceModel()
-let hc_state = 0
+let hc_state = 12 // change back to 0
 let tim = 0
 let instruction = <HTMLElement> document.getElementById("instructions")
 let pic = <HTMLImageElement> document.getElementById("clue")
@@ -141,19 +141,23 @@ function main() {
         // head
         head1 = new Head(means, vars)
 
+        tim = 120 * 3
+    }
+    else if (hc_state == 12) {
         // prepare for game
         let ui: HTMLElement = <HTMLElement> document.getElementById("head-calibration")
         ui.style.display = "none"
         let gamey: HTMLElement = <HTMLElement> document.getElementById("game")
         gamey.style.display = "block"
         navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {video.srcObject = stream})
+
         tim = 120 * 3
     }
     if (tim >= 120 * 3) {
         tim = 0
         hc_state++
     }
-    if (hc_state < 12) {
+    if (hc_state < 13) {
         setTimeout(main, 1000 / 120)
     }
     else {

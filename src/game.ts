@@ -1,4 +1,6 @@
-import { Engine, Scene, Vector3, HemisphericLight, Mesh, MeshBuilder, ShaderMaterial} from "@babylonjs/core"
+import { Engine, Scene, Vector3, HemisphericLight, Mesh, MeshBuilder, ShaderMaterial, ImportMeshAsync, Color4, ISceneLoaderAsyncResult, AbstractMesh} from "@babylonjs/core"
+import 'babylonjs-loaders'
+import { registerBuiltInLoaders } from "@babylonjs/loaders/dynamic"
 import { Car } from "./car"
 import { InputHandler } from "./input"
 import { Head } from "./head"
@@ -24,8 +26,16 @@ export class Game {
         this.scene = new Scene(this.engine)
 
         // add stuff to scene
-        this.car1 = new Car(-20, 0, 0, this.scene, 0, "1")
-        this.car2 = new Car(20, 0, 0, this.scene, 0.5, "2")
+        registerBuiltInLoaders()
+        let mesh1: Promise<Mesh> = ImportMeshAsync("models/rainbow_car.obj", this.scene).then(function(s) {return <Mesh> s.meshes[0]})
+        let mesh2: Mesh = MeshBuilder.CreateBox("boxen", {size: 1}, this.scene)
+        let dummy_mesh: Mesh = MeshBuilder.CreateBox("dummy", {size: 1}, this.scene)
+        this.scene.meshes.pop()
+        this.car1 = new Car(dummy_mesh, -20, 0, 0, this.scene, 0, "1")
+        mesh1.then((m) => {
+            this.car1 = new Car(m, -20, 0, 0, this.scene, 0, "1")
+        })
+        this.car2 = new Car(mesh2, 20, 0, 0, this.scene, 0.5, "2")
         var track: Mesh = MeshBuilder.CreateBox("racetrack", {width: 80, height: 0.01, depth: 10000})
         track.position = new Vector3(0, -0.005, 4050)
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), this.scene)
