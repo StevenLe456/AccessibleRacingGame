@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "esbuild src/main.ts --bundle --sourcemap --outfile=test/src.js && cp -r public/* test/",
-    "dist": "esbuild src/main.ts --bundle --minify --output=dist/src.js && cp -r public/* dist/"
+    "dist": "esbuild src/main.ts --bundle --minify --outfile=dist/src.js && cp -r public/* dist/"
   },
   "repository": {
     "type": "git",
