@@ -124,9 +124,11 @@ function main() {
         })
     }
     else if (hc_state == 10) {
-        instruction.innerHTML = "Calibrating controls. Will redirect afterwards."
+        instruction.innerHTML = "Relax your head. Currently calibrating controls. Will redirect afterwards."
         pic.src = "img/head_still.png"
-
+        tim += 45
+    }
+    else if (hc_state == 11) {
         // Do Gaussian Naive Bayes to calculate head stuff
         let d0_stat = mean_var(data_0)
         let d1_stat = mean_var(data_1)
@@ -151,7 +153,7 @@ function main() {
         tim = 0
         hc_state++
     }
-    if (hc_state < 11) {
+    if (hc_state < 12) {
         setTimeout(main, 1000 / 45)
     }
     else {
