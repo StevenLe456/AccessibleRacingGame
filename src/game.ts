@@ -28,12 +28,12 @@ export class Game {
         // add stuff to scene
         registerBuiltInLoaders()
         let mesh1: Promise<Mesh> = ImportMeshAsync("models/rainbow_car.obj", this.scene).then(function(s) {return <Mesh> s.meshes[0]})
-        let mesh2: Mesh = MeshBuilder.CreateBox("boxen", {size: 1}, this.scene)
-        let dummy_mesh: Mesh = MeshBuilder.CreateBox("dummy", {size: 1}, this.scene)
-        this.scene.meshes.pop()
+        let mesh2: Mesh = MeshBuilder.CreateBox("boxen", {width: 1, height: 1, depth: 6})
+        let dummy_mesh: Mesh = MeshBuilder.CreateBox("dummy", {size: 1})
         this.car1 = new Car(dummy_mesh, -20, 0, 0, this.scene, 0, "1")
+        this.scene.meshes.pop()
         mesh1.then((m) => {
-            this.car1 = new Car(m, -20, 0, 0, this.scene, 0, "1")
+            this.car1.setMesh(m)
         })
         this.car2 = new Car(mesh2, 20, 0, 0, this.scene, 0.5, "2")
         var track: Mesh = MeshBuilder.CreateBox("racetrack", {width: 80, height: 0.01, depth: 10000})

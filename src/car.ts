@@ -15,6 +15,7 @@ export class Car {
 
     constructor(m: Mesh, x: number, y: number, z: number, s: Scene, cvs_x: number, id: string) {
         this.mesh = m
+        m.position = new Vector3(x, y ,z)
         this.x = x
         this.y = y
         this.z = z
@@ -28,6 +29,10 @@ export class Car {
         this.cam.viewport = new Viewport(this.cvs_x, 0, 0.5, 1)
         this.car_display = <HTMLElement> document.getElementById("display")
     }
+
+    setMesh(m: Mesh) {
+        this.mesh = m
+    } 
 
     update() {
         this.x += this.velocity * Math.sin(this.rotation)
