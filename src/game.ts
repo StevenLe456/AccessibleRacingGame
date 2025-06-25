@@ -24,9 +24,9 @@ export class Game {
         this.scene = new Scene(this.engine)
 
         // add stuff to scene
-        this.car1 = new Car(-10, 0, 0, 1, 0, 0, this.scene, 0, "1")
-        this.car2 = new Car(10, 0, 0, 0, 1, 0, this.scene, 0.5, "2")
-        var track: Mesh = MeshBuilder.CreateBox("racetrack", {width: 40, height: 0.01, depth: 10000})
+        this.car1 = new Car(-20, 0, 0, 1, 0, 0, this.scene, 0, "1")
+        this.car2 = new Car(20, 0, 0, 0, 1, 0, this.scene, 0.5, "2")
+        var track: Mesh = MeshBuilder.CreateBox("racetrack", {width: 80, height: 0.01, depth: 10000})
         track.position = new Vector3(0, -0.005, 4050)
         var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), this.scene)
 

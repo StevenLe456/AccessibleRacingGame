@@ -48,18 +48,18 @@ export class Car {
     }
 
     turn_left() {
-        this.rotation -= 0.01
+        this.rotation -= 0.005
     }
 
     turn_right() {
-        this.rotation += 0.01
+        this.rotation += 0.005
     }
 
     accelerate() {
-        this.velocity += 0.01
+        this.velocity += 0.005
     }
 
     decelerate() {
-        this.velocity -= 0.01
+        this.velocity -= 0.005
     }
 }
