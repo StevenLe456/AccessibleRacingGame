@@ -15,6 +15,7 @@ export class Car {
     private id
     private mesh: Mesh
     private cam: UniversalCamera
+    private car_display 
 
     constructor(x: number, y: number, z: number, r: number, g: number, b: number, s: Scene, cvs_x: number, id: string) {
         this.x = x
@@ -34,6 +35,7 @@ export class Car {
         this.cam = new UniversalCamera("cam" + id, new Vector3(this.x, this.y + 2, this.z - 10), this.scene)
         this.scene.activeCameras?.push(this.cam)
         this.cam.viewport = new Viewport(this.cvs_x, 0, 0.5, 1)
+        this.car_display = <HTMLElement> document.getElementById("display")
     }
 
     update() {
@@ -41,7 +43,8 @@ export class Car {
         this.z += this.velocity * Math.cos(this.rotation)
         this.mesh.rotation = new Vector3(0, this.rotation, 0)
         this.mesh.position = new Vector3(this.x, this.y, this.z)
-        this.cam.position = new Vector3(this.x, this.cam.position.y, this.z - 10);
+        this.cam.position = new Vector3(this.x, this.cam.position.y, this.z - 10)
+        this.car_display.innerHTML = "Velocity: " + this.velocity.toFixed(2)
     }
 
     turn_left() {
