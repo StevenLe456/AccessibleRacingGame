@@ -22,7 +22,7 @@ export class Car {
         this.y = y
         this.z = z
         this.checkpoint = z
-        this.rotation = Math.PI / 8
+        this.rotation = 0
         this.velocity = 0.5
         this.scene = s
         this.cvs_x = cvs_x
