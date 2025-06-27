@@ -6,27 +6,16 @@ import { InputHandler } from "./input"
 import { Head } from "./head"
 import * as faceDetection from '@tensorflow-models/face-detection';
 
-class MeshObjs {
-    public mesh: Mesh
-    public bb: BoundingBox
-
-    constructor(m: Mesh) {
-        this.mesh = m;
-        this.bb = this.mesh.getBoundingInfo().boundingBox
-    }
-}
-
 class GameObj {
     public camvas: HTMLCanvasElement
     public engine: Engine
     public scene: Scene
     public car1: Car
     public car2: Car
-    public guardrails: MeshObjs[]
     public head1: Head
     public inputty: InputHandler
 
-    constructor(cam: HTMLCanvasElement, e: Engine, s: Scene, c1: Car, c2: Car, h1: Head, i: InputHandler, gr: MeshObjs[]) {
+    constructor(cam: HTMLCanvasElement, e: Engine, s: Scene, c1: Car, c2: Car, h1: Head, i: InputHandler) {
         this.camvas = cam
         this.engine = e
         this.scene = s
@@ -34,7 +23,6 @@ class GameObj {
         this.car2 = c2
         this.head1 = h1
         this.inputty = i
-        this.guardrails = gr
     }
 }
 
@@ -60,21 +48,8 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     let car1 = new Car(mesh1, -20, 0, 0, scene, 0, "1")
     let car2 = new Car(mesh2, 20, 0, 0, scene, 0.5, "2")
     
-    var track: Mesh = MeshBuilder.CreateBox("racetrack", {width: 80, height: 0.01, depth: 10000})
+    var track: Mesh = MeshBuilder.CreateBox("racetrack", {width: 120, height: 0.01, depth: 10000})
     track.position = new Vector3(0, -0.005, 4050)
-    var rail1: Mesh = MeshBuilder.CreateBox("rail1", {width: 1, height: 4, depth: 10000})
-    rail1.position = new Vector3(-40.5, 2, 4050)
-    rail1.refreshBoundingInfo()
-    rail1.computeWorldMatrix(true)
-    rail1.showBoundingBox = true
-    var rail2: Mesh = MeshBuilder.CreateBox("rail2", {width: 1, height: 4, depth: 10000})
-    rail2.position = new Vector3(40.5, 2, 4050)
-    rail2.refreshBoundingInfo()
-    rail2.computeWorldMatrix(true)
-    rail2.showBoundingBox = true
-
-    let gr1 = new MeshObjs(rail1)
-    let gr2 = new MeshObjs(rail2)
 
     var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene)
 
@@ -90,7 +65,7 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     })
     track.material = rainbowMaterial
 
-    return new GameObj(cam, engine, scene, car1, car2, head1, inputty, [gr1, gr2])
+    return new GameObj(cam, engine, scene, car1, car2, head1, inputty)
 }
 
 export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webcam: HTMLVideoElement, cam: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
@@ -102,7 +77,6 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
         let car2 = g.car2
         let head1 = g.head1
         let inputty = g.inputty
-        let guardrails = g.guardrails
 
         // run the main render loop
         engine.runRenderLoop(() => {
@@ -124,9 +98,12 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
                     a_max.z >= b_min.z
                 )
             }
-            if (intersect(car1.bb, guardrails[0].bb) || intersect(car1.bb, guardrails[1].bb)) {
-                console.log("Fizz")
-                car1.impulse()
+            // detect free-fall
+            if (!car1.on_track()) {
+                car1.apply_gravity()
+            }
+            if (car1.rock_bottom()) {
+                car1.to_checkpoint()
             }
             // update game state
             car1.update()

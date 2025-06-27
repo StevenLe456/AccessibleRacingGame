@@ -4,6 +4,7 @@ export class Car {
     private x
     private y
     private z
+    private checkpoint
     public rotation
     public velocity
     private scene
@@ -20,7 +21,8 @@ export class Car {
         this.x = x
         this.y = y
         this.z = z
-        this.rotation = 0
+        this.checkpoint = z
+        this.rotation = Math.PI / 8
         this.velocity = 0.5
         this.scene = s
         this.cvs_x = cvs_x
@@ -38,12 +40,12 @@ export class Car {
     } 
 
     update() {
-        console.log(this.velocity)
         this.x += this.velocity * Math.sin(this.rotation)
         this.z += this.velocity * Math.cos(this.rotation)
+        this.checkpoint = this.z
         this.mesh.rotation = new Vector3(0, this.rotation, 0)
         this.mesh.position = new Vector3(this.x, this.y, this.z)
-        this.cam.position = new Vector3(this.x, this.cam.position.y, this.z - 10)
+        this.cam.position = new Vector3(this.x, this.y + 2, this.z - 10)
         this.mesh.refreshBoundingInfo()
         this.mesh.computeWorldMatrix(true)
         this.car_display.innerHTML = "Velocity: " + this.velocity.toFixed(2)
@@ -65,7 +67,21 @@ export class Car {
         this.velocity -= 0.01
     }
 
-    impulse() {
-        this.velocity = 0
+    on_track() {
+        return this.x > -65 && this.x < 65
+    }
+
+    apply_gravity() {
+        this.y -= 2
+    }
+
+    rock_bottom() {
+        return this.y < -240
+    }
+
+    to_checkpoint() {
+        this.x = -20
+        this.y = 0
+        this.z = this.checkpoint
     }
 }
