@@ -1,4 +1,4 @@
-import { Scene, Mesh, UniversalCamera, Vector3, Viewport, PhysicsAggregate, PhysicsShapeType } from "@babylonjs/core"
+import { Scene, Mesh, UniversalCamera, Vector3, Viewport } from "@babylonjs/core"
 
 export class Car {
     private x
@@ -12,8 +12,7 @@ export class Car {
     private mesh: Mesh
     private cam: UniversalCamera
     private car_display
-    public mass 
-    public phys_aggr
+    public bb
 
     constructor(m: Mesh, x: number, y: number, z: number, s: Scene, cvs_x: number, id: string) {
         this.mesh = m
@@ -21,7 +20,7 @@ export class Car {
         this.x = x
         this.y = y
         this.z = z
-        this.rotation = 45
+        this.rotation = 0
         this.velocity = 0.5
         this.scene = s
         this.cvs_x = cvs_x
@@ -30,8 +29,8 @@ export class Car {
         this.scene.activeCameras?.push(this.cam)
         this.cam.viewport = new Viewport(this.cvs_x, 0, 0.5, 1)
         this.car_display = <HTMLElement> document.getElementById("display")
-        this.mass = 5 * Math.random()
-        this.phys_aggr = new PhysicsAggregate(this.mesh, PhysicsShapeType.CONVEX_HULL, {mass: this.mass}, this.scene)
+        this.bb = this.mesh.getBoundingInfo().boundingBox
+        this.mesh.showBoundingBox = true
     }
 
     setMesh(m: Mesh) {
@@ -39,11 +38,14 @@ export class Car {
     } 
 
     update() {
+        console.log(this.velocity)
         this.x += this.velocity * Math.sin(this.rotation)
         this.z += this.velocity * Math.cos(this.rotation)
         this.mesh.rotation = new Vector3(0, this.rotation, 0)
         this.mesh.position = new Vector3(this.x, this.y, this.z)
         this.cam.position = new Vector3(this.x, this.cam.position.y, this.z - 10)
+        this.mesh.refreshBoundingInfo()
+        this.mesh.computeWorldMatrix(true)
         this.car_display.innerHTML = "Velocity: " + this.velocity.toFixed(2)
     }
 
@@ -56,16 +58,14 @@ export class Car {
     }
 
     accelerate() {
-        this.velocity += 0.005
+        this.velocity += 0.01
     }
 
     decelerate() {
-        this.velocity -= 0.005
+        this.velocity -= 0.01
     }
 
-    impulse(obj_velocity1: number, obj_velocity2: number, obj_mass: number, obj_rotation: number, elasticity: number) {
-        let lhs = this.mass * this.velocity + obj_mass * obj_velocity1
-        this.x += (lhs - (obj_velocity2 * obj_mass)) / this.mass * Math.sin(this.rotation + obj_rotation) * elasticity
-        this.z += (lhs - (obj_velocity2 * obj_mass)) / this.mass * Math.cos(this.rotation + obj_rotation) * elasticity
+    impulse() {
+        this.velocity = 0
     }
 }

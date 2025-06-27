@@ -17,7 +17,7 @@ const l_ctx = <CanvasRenderingContext2D> lefty.getContext('2d')
 const ctx = <CanvasRenderingContext2D> canvas.getContext('2d')
 let arr: Promise<number[]> = navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {other_video.srcObject = stream; let {width, height} = stream.getVideoTracks()[0].getSettings(); return <number[]> [width, height];})
 let model = initFaceModel()
-let hc_state = 12 // change back to 0
+let hc_state = 0 // change back to 0
 let tim = 0
 let instruction = <HTMLElement> document.getElementById("instructions")
 let pic = <HTMLImageElement> document.getElementById("clue")
