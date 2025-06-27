@@ -2,9 +2,9 @@ import '@tensorflow/tfjs-core';
 // Adds the WebGL backend to the global backend registry.
 import '@tensorflow/tfjs-backend-webgl';
 import { initFaceModel, getFace } from "./comp_vision"
-import { Game } from "./game"
 import { Head } from './head';
 import { mean_var } from './stats_util';
+import { game } from './game';
 
 // init stuff
 let video: HTMLVideoElement = <HTMLVideoElement> document.getElementById("videoElement")
@@ -162,8 +162,7 @@ function main() {
     }
     else {
         // initialize game
-        var game = new Game(head1, model, video, canvas, ctx)
-        game.update()
+        game(head1, model, video, canvas, ctx)
     }
 }
 
