@@ -12,7 +12,8 @@ export class Car {
     private id
     private mesh: Mesh
     private cam: UniversalCamera
-    private car_display
+    private velocity_display
+    private distance_display
     public bb
 
     constructor(m: Mesh, x: number, y: number, z: number, s: Scene, cvs_x: number, id: string) {
@@ -30,7 +31,8 @@ export class Car {
         this.cam = new UniversalCamera("cam" + this.id, new Vector3(this.x, this.y + 2, this.z - 10), this.scene)
         this.scene.activeCameras?.push(this.cam)
         this.cam.viewport = new Viewport(this.cvs_x, 0, 0.5, 1)
-        this.car_display = <HTMLElement> document.getElementById("display")
+        this.velocity_display = <HTMLElement> document.getElementById("velocity" + this.id)
+        this.distance_display = <HTMLElement> document.getElementById("distance" + this.id)
         this.bb = this.mesh.getBoundingInfo().boundingBox
         this.mesh.showBoundingBox = true
     }
@@ -40,15 +42,27 @@ export class Car {
     } 
 
     update() {
-        this.x += this.velocity * Math.sin(this.rotation)
-        this.z += this.velocity * Math.cos(this.rotation)
-        this.checkpoint = this.z
+        // detect if off-track; apply gravity
+        if (!this.on_track()) {
+            this.apply_gravity()
+        }
+        // else, go as normal
+        else {
+            this.x += this.velocity * Math.sin(this.rotation)
+            this.z += this.velocity * Math.cos(this.rotation)
+            this.checkpoint = this.z
+        }
+        // move car back on track
+        if (this.rock_bottom()) {
+            this.to_checkpoint()
+        }
         this.mesh.rotation = new Vector3(0, this.rotation, 0)
         this.mesh.position = new Vector3(this.x, this.y, this.z)
         this.cam.position = new Vector3(this.x, this.y + 2, this.z - 10)
         this.mesh.refreshBoundingInfo()
         this.mesh.computeWorldMatrix(true)
-        this.car_display.innerHTML = "Velocity: " + this.velocity.toFixed(2)
+        this.velocity_display.innerHTML = "Velocity: " + this.velocity.toFixed(2)
+        this.distance_display.innerHTML = "Distance: " + this.z.toFixed(2) + " / 9000"
     }
 
     turn_left() {
@@ -68,7 +82,7 @@ export class Car {
     }
 
     on_track() {
-        return this.x > -65 && this.x < 65
+        return this.x > -65 && this.x < 65 && this.z > -105
     }
 
     apply_gravity() {

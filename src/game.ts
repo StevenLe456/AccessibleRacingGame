@@ -49,7 +49,7 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     let car2 = new Car(mesh2, 20, 0, 0, scene, 0.5, "2")
     
     var track: Mesh = MeshBuilder.CreateBox("racetrack", {width: 120, height: 0.01, depth: 10000})
-    track.position = new Vector3(0, -0.005, 4050)
+    track.position = new Vector3(0, -0.005, 4900)
 
     var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene)
 
@@ -97,13 +97,6 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
                     a_min.z <= b_max.z &&
                     a_max.z >= b_min.z
                 )
-            }
-            // detect free-fall
-            if (!car1.on_track()) {
-                car1.apply_gravity()
-            }
-            if (car1.rock_bottom()) {
-                car1.to_checkpoint()
             }
             // update game state
             car1.update()

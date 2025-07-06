@@ -19,23 +19,26 @@
         <div id="game">
             <div id="hud">
                 <div id="player1">
-                    <p id="up">🢁</p>
-                    <p id="down">🢃</p>
-                    <p id="lefty">🢀</p>
-                    <p id="righty">🢂</p>
-                    <p id="display"></p>
+                    <h1 id="velocity1"></h1>
+                    <h1 id="distance1"></h1>
                 </div>
                 <div id="webcam">
                     <video autoplay="true" id="videoElement"></video>
                     <canvas id="stream"></canvas>
                 </div>
                 <div id="player2">
-                    <p>Player Two</p>
+                    <h1 id="display2">Player 2</p>
                 </div>
             </div>
             <div class="vl"></div>
             <canvas id="gameCanvas"></canvas>
             <img src="img/controls.png" alt="controls" id="ctrl">
+            <div id="bottom">
+                <img src="img/up.png" id="up">
+                <img src="img/down.png" id="down">
+                <img src="img/left.png" id="lefty">
+                <img src="img/right.png" id="righty">
+            </div>
         </div>
         <script src="src.js"></script>
     </body>
