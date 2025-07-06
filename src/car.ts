@@ -34,7 +34,6 @@ export class Car {
         this.velocity_display = <HTMLElement> document.getElementById("velocity" + this.id)
         this.distance_display = <HTMLElement> document.getElementById("distance" + this.id)
         this.bb = this.mesh.getBoundingInfo().boundingBox
-        this.mesh.showBoundingBox = true
     }
 
     setMesh(m: Mesh) {
