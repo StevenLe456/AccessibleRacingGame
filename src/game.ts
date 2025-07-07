@@ -5,6 +5,8 @@ import { Car } from "./car"
 import { InputHandler } from "./input"
 import { Head } from "./head"
 import * as faceDetection from '@tensorflow-models/face-detection';
+import { Entity } from "./entity"
+import { collisionAABB } from "./physics"
 
 class GameObj {
     public camvas: HTMLCanvasElement
@@ -12,15 +14,19 @@ class GameObj {
     public scene: Scene
     public car1: Car
     public car2: Car
+    public guardrails: Entity[]
+    public obstacles: Entity[]
     public head1: Head
     public inputty: InputHandler
 
-    constructor(cam: HTMLCanvasElement, e: Engine, s: Scene, c1: Car, c2: Car, h1: Head, i: InputHandler) {
+    constructor(cam: HTMLCanvasElement, e: Engine, s: Scene, c1: Car, c2: Car, gr: Entity[], o: Entity[], h1: Head, i: InputHandler) {
         this.camvas = cam
         this.engine = e
         this.scene = s
         this.car1 = c1
         this.car2 = c2
+        this.guardrails = gr
+        this.obstacles = o
         this.head1 = h1
         this.inputty = i
     }
@@ -50,6 +56,13 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     
     var track: Mesh = MeshBuilder.CreateBox("racetrack", {width: 120, height: 0.01, depth: 10000})
     track.position = new Vector3(0, -0.005, 4900)
+    var gr1_m: Mesh = MeshBuilder.CreateBox("gaurdrail1", {width: 4, height: 4, depth: 10000})
+    gr1_m.position = new Vector3(-62, 2, 4900)
+    var gr2_m: Mesh = MeshBuilder.CreateBox("gaurdrail2", {width: 4, height: 4, depth: 10000})
+    gr2_m.position = new Vector3(62, 2, 4900)
+    let gr = [new Entity(gr1_m), new Entity(gr2_m)]
+
+    let o: Entity[] = []
 
     var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene)
 
@@ -65,7 +78,7 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     })
     track.material = rainbowMaterial
 
-    return new GameObj(cam, engine, scene, car1, car2, head1, inputty)
+    return new GameObj(cam, engine, scene, car1, car2, gr, o, head1, inputty)
 }
 
 export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webcam: HTMLVideoElement, cam: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
@@ -75,6 +88,7 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
         let scene = g.scene
         let car1 = g.car1
         let car2 = g.car2
+        let guardrails = g.guardrails
         let head1 = g.head1
         let inputty = g.inputty
 
@@ -83,23 +97,45 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
             // handle input
             inputty.update(camvas, head1)
             inputty.handle_input(car1)
-            // collision detection
-            function intersect(a: BoundingBox, b: BoundingBox) {
-                let a_min = a.minimumWorld
-                let a_max = a.maximumWorld
-                let b_min = b.minimumWorld
-                let b_max = b.maximumWorld
-                return (
-                    a_min.x <= b_max.x &&
-                    a_max.x >= b_min.x &&
-                    a_min.y <= b_max.y &&
-                    a_max.y >= b_min.y &&
-                    a_min.z <= b_max.z &&
-                    a_max.z >= b_min.z
-                )
+            // function to check for car-guardrail collision
+            function carGuardrailCollide(car: Car, gr: Entity) {
+                let dx = car.x - car.px
+                let dy = car.y - car.py
+                let dz = car.z - car.pz
+                return collisionAABB(car.bb, gr.bounding_box, dx, dy, dz)
+            }
+            // car1-guardrail check
+            let r
+            if (car1.x < 0) {
+                r = carGuardrailCollide(car1, guardrails[0])
+            }
+            else {
+                r = carGuardrailCollide(car1, guardrails[1])
+            }
+            if (r["h"] < 1) { // If there is collision between car1 and a guardrail
+                var ep = 0.001;
+		        car1.x = car1.px + r.h*(car1.x-car1.px) + ep*r.nx;
+		        car1.y = car1.py + r.h*(car1.y-car1.py) + ep*r.ny;
+		        car1.z = car1.pz + r.h*(car1.z-car1.pz) + ep*r.nz;
+                car1.bounce()
+            }
+            // car2-guardrail check
+            if (car2.x < 0) {
+                r = carGuardrailCollide(car2, guardrails[0])
+            }
+            else {
+                r = carGuardrailCollide(car2, guardrails[1])
+            }
+            if (r["h"] < 1) { // If there is collision between car2 and a guardrail
+                var ep = 0.001;
+		        car2.x = car2.px + r.h*(car2.x-car2.px) + ep*r.nx;
+		        car2.y = car2.py + r.h*(car2.y-car2.py) + ep*r.ny;
+		        car2.z = car2.pz + r.h*(car2.z-car2.pz) + ep*r.nz;
+                car2.bounce()
             }
             // update game state
             car1.update()
+            car2.update()
             // render game
             scene.render()
         })
