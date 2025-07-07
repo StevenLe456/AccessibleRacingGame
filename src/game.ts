@@ -48,7 +48,7 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     mesh1.rotate(new Vector3(0, 1, 0), -Math.PI)
     mesh1.refreshBoundingInfo()
     mesh1.computeWorldMatrix(true)
-    mesh2.rotate(new Vector3(0, 1, 0), Math.PI)
+    mesh2.rotate(new Vector3(0, 1, 0), -Math.PI)
     mesh2.refreshBoundingInfo()
     mesh2.computeWorldMatrix(true)
     let car1 = new Car(mesh1, -20, 0, 0, scene, 0, "1")
@@ -63,6 +63,13 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     let gr = [new Entity(gr1_m), new Entity(gr2_m)]
 
     let o: Entity[] = []
+    for (let i = 200; i < 9000; i+=200) {
+        let poptart_mesh = <Mesh> (await ImportMeshAsync("models/poptart.obj", scene)).meshes[0]
+        poptart_mesh.rotate(new Vector3(0, 1, 0), -Math.PI)
+        poptart_mesh.scaling = new Vector3(10, 4, 4)
+        poptart_mesh.position = new Vector3(Math.random() * (80 + 1) - 40, 0, i)
+        o.push(new Entity(poptart_mesh))
+    }
 
     var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene)
 
