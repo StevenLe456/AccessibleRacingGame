@@ -96,6 +96,7 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
         let car1 = g.car1
         let car2 = g.car2
         let guardrails = g.guardrails
+        let obstacles = g.obstacles
         let head1 = g.head1
         let inputty = g.inputty
 
@@ -105,7 +106,7 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
             inputty.update(camvas, head1)
             inputty.handle_input(car1)
             // function to check for car-guardrail collision
-            function carGuardrailCollide(car: Car, gr: Entity) {
+            function carEntityCollide(car: Car, gr: Entity) {
                 let dx = car.x - car.px
                 let dy = car.y - car.py
                 let dz = car.z - car.pz
@@ -113,11 +114,11 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
             }
             // car1-guardrail check
             let r
-            if (car1.x < 0) {
-                r = carGuardrailCollide(car1, guardrails[0])
+            if (car1.px < 0) {
+                r = carEntityCollide(car1, guardrails[0])
             }
             else {
-                r = carGuardrailCollide(car1, guardrails[1])
+                r = carEntityCollide(car1, guardrails[1])
             }
             if (r["h"] < 1) { // If there is collision between car1 and a guardrail
                 var ep = 0.001;
@@ -127,11 +128,11 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
                 car1.bounce()
             }
             // car2-guardrail check
-            if (car2.x < 0) {
-                r = carGuardrailCollide(car2, guardrails[0])
+            if (car2.px < 0) {
+                r = carEntityCollide(car2, guardrails[0])
             }
             else {
-                r = carGuardrailCollide(car2, guardrails[1])
+                r = carEntityCollide(car2, guardrails[1])
             }
             if (r["h"] < 1) { // If there is collision between car2 and a guardrail
                 var ep = 0.001;
@@ -139,6 +140,30 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
 		        car2.y = car2.py + r.h*(car2.y-car2.py) + ep*r.ny;
 		        car2.z = car2.pz + r.h*(car2.z-car2.pz) + ep*r.nz;
                 car2.bounce()
+            }
+            // car1-obstacle check
+            if (car1.pz >= 200 && car1.pz < 9000) {
+                let idx = Math.floor(car1.pz / 200.0) - 1
+                r = carEntityCollide(car1, obstacles[idx])
+                if (r["h"] < 1) { // If there is collision between car1 and an obstacle
+                    var ep = 0.001;
+                    car1.x = car1.px + r.h*(car1.x-car1.px) + ep*r.nx;
+                    car1.y = car1.py + r.h*(car1.y-car1.py) + ep*r.ny;
+                    car1.z = car1.pz + r.h*(car1.z-car1.pz) + ep*r.nz;
+                    car1.bounce()
+                }
+            }
+            // car2-obstacle check
+            if (car2.pz >= 200 && car2.pz < 9000) {
+                let idx = Math.floor(car2.pz / 200.0) - 1
+                r = carEntityCollide(car2, obstacles[idx])
+                if (r["h"] < 1) { // If there is collision between car2 and an obstacle
+                    var ep = 0.001;
+                    car2.x = car2.px + r.h*(car2.x-car2.px) + ep*r.nx;
+                    car2.y = car2.py + r.h*(car2.y-car2.py) + ep*r.ny;
+                    car2.z = car2.pz + r.h*(car2.z-car2.pz) + ep*r.nz;
+                    car2.bounce()
+                }
             }
             // update game state
             car1.update()
