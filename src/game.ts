@@ -105,15 +105,32 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
             // handle input
             inputty.update(camvas, head1)
             inputty.handle_input(car1)
-            // function to check for car-guardrail collision
+            // function to check for car-entity collision
             function carEntityCollide(car: Car, gr: Entity) {
                 let dx = car.x - car.px
                 let dy = car.y - car.py
                 let dz = car.z - car.pz
                 return collisionAABB(car.bb, gr.bounding_box, dx, dy, dz)
             }
-            // car1-guardrail check
+            // function to check for car-car collision
+            function carCarCollide(c1: Car, c2: Car) {
+                let dx = (c1.x - c1.px) - (c2.x - c2.px)
+                let dy = (c1.y - c1.py) - (c2.y - c2.py)
+                let dz = (c1.z - c1.pz) - (c2.z - c2.pz)
+                return collisionAABB(c1.bb, c2.bb, dx, dy, dz)
+            }
+            // car-car check
             let r
+            r = carCarCollide(car1, car2)
+            if (r["h"] < 1) { // If there is collision between car1 and car2
+                var ep = 0.001;
+                car1.x = car1.px + r.h*(car1.x-car1.px) + ep*r.nx;
+                car1.y = car1.py + r.h*(car1.y-car1.py) + ep*r.ny;
+                car1.z = car1.pz + r.h*(car1.z-car1.pz) + ep*r.nz;
+                car1.bounce()
+                car2.bounce()
+            }
+            // car1-guardrail check
             if (car1.px < 0) {
                 r = carEntityCollide(car1, guardrails[0])
             }
