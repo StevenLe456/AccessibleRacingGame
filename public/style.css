@@ -167,6 +167,7 @@ img {
     height: 98%;
     object-fit: fill;
     order: 3;
+    visibility: hidden;
 }
 #left {
     padding: 0%;
