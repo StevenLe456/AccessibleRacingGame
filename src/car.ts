@@ -37,7 +37,6 @@ export class Car {
         this.cam = new UniversalCamera("cam" + this.id, new Vector3(this.x, this.y + 2, this.z - 10), this.scene)
         this.scene.activeCameras?.push(this.cam)
         this.cam.viewport = new Viewport(this.cvs_x, 0, 0.5, 1)
-        console.log("velocity" + this.id)
         this.velocity_display = <HTMLElement> document.getElementById("velocity" + this.id)
         this.distance_display = <HTMLElement> document.getElementById("distance" + this.id)
         this.bb = this.mesh.getBoundingInfo().boundingBox
@@ -84,5 +83,17 @@ export class Car {
 
     bounce() {
         this.velocity = -this.velocity
+    }
+
+    win() {
+        this.velocity_display.innerHTML = "WINNER!!! :)"
+        this.distance_display.innerHTML = ""
+        this.velocity = 0
+    }
+
+    lose() {
+        this.velocity_display.innerHTML = "LOSER... :("
+        this.distance_display.innerHTML = ""
+        this.velocity = 0
     }
 }

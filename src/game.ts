@@ -194,6 +194,17 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
             // update game state
             car1.update()
             car2.update()
+            if (car1.z > 9000) {
+                car1.win()
+                car2.lose()
+            }
+            else if (car2.z > 9000) {
+                car2.win()
+                car1.lose()
+            }
+            else {
+                // continue
+            }
             // render game
             scene.render()
         })
