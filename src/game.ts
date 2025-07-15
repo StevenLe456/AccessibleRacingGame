@@ -7,6 +7,7 @@ import { Head } from "./head"
 import * as faceDetection from '@tensorflow-models/face-detection';
 import { Entity } from "./entity"
 import { collisionAABB } from "./physics"
+import { AIController } from "./ai_controller"
 
 class GameObj {
     public camvas: HTMLCanvasElement
@@ -18,8 +19,9 @@ class GameObj {
     public obstacles: Entity[]
     public head1: Head
     public inputty: InputHandler
+    public ai: AIController
 
-    constructor(cam: HTMLCanvasElement, e: Engine, s: Scene, c1: Car, c2: Car, gr: Entity[], o: Entity[], h1: Head, i: InputHandler) {
+    constructor(cam: HTMLCanvasElement, e: Engine, s: Scene, c1: Car, c2: Car, gr: Entity[], o: Entity[], h1: Head, i: InputHandler, ai: AIController) {
         this.camvas = cam
         this.engine = e
         this.scene = s
@@ -29,6 +31,7 @@ class GameObj {
         this.obstacles = o
         this.head1 = h1
         this.inputty = i
+        this.ai = ai
     }
 }
 
@@ -44,11 +47,12 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     // add stuff to scene
     registerBuiltInLoaders()
     let mesh1 = <Mesh> (await ImportMeshAsync("models/car1.obj", scene)).meshes[0]
-    let mesh2 = <Mesh> (await ImportMeshAsync("models/car2.obj", scene)).meshes[0]
+    //let mesh2 = <Mesh> (await ImportMeshAsync("models/car2.obj", scene)).meshes[0]
+    let mesh2 = MeshBuilder.CreateBox("boxen", {width: 2, height: 2, depth: 6})
     mesh1.rotate(new Vector3(0, 1, 0), -Math.PI)
     mesh1.refreshBoundingInfo()
     mesh1.computeWorldMatrix(true)
-    mesh2.rotate(new Vector3(0, 1, 0), -Math.PI)
+    mesh2.rotate(new Vector3(0, -1, 0), Math.PI)
     mesh2.refreshBoundingInfo()
     mesh2.computeWorldMatrix(true)
     let car1 = new Car(mesh1, -20, 0, 0, scene, 0, "1")
@@ -85,7 +89,9 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     })
     track.material = rainbowMaterial
 
-    return new GameObj(cam, engine, scene, car1, car2, gr, o, head1, inputty)
+    let ai = new AIController(car2, car1, o)
+
+    return new GameObj(cam, engine, scene, car1, car2, gr, o, head1, inputty, ai)
 }
 
 export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webcam: HTMLVideoElement, cam: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
@@ -99,12 +105,15 @@ export function game(h1: Head, model: Promise<faceDetection.FaceDetector> , webc
         let obstacles = g.obstacles
         let head1 = g.head1
         let inputty = g.inputty
+        let ai = g.ai
 
         // run the main render loop
         engine.runRenderLoop(() => {
             // handle input
             inputty.update(camvas, head1)
             inputty.handle_input(car1)
+            // handle AI for car2
+            ai.drive()
             // function to check for car-entity collision
             function carEntityCollide(car: Car, gr: Entity) {
                 let dx = car.x - car.px
