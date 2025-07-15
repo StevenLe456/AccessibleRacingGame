@@ -53,6 +53,9 @@ export class Car {
         this.pz = this.z
         this.x += this.velocity * Math.sin(this.rotation)
         this.z += this.velocity * Math.cos(this.rotation)
+        if (this.z < -50) {
+            this.velocity = 0
+        }
         this.checkpoint = this.z
         this.mesh.rotation = new Vector3(0, this.rotation, 0)
         this.mesh.position = new Vector3(this.x, this.y, this.z)
@@ -77,24 +80,6 @@ export class Car {
 
     decelerate() {
         this.velocity -= 0.01
-    }
-
-    on_track() {
-        return this.x > -65 && this.x < 65 && this.z > -105
-    }
-
-    apply_gravity() {
-        this.y -= 2
-    }
-
-    rock_bottom() {
-        return this.y < -240
-    }
-
-    to_checkpoint() {
-        this.x = -20
-        this.y = 0
-        this.z = this.checkpoint
     }
 
     bounce() {

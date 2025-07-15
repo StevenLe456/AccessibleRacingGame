@@ -75,10 +75,10 @@ export class AIController {
         // }
         else if (this.state == CarState.OBSTRUCTED_3) {
             if (this.goal_x > 0) {
-                this.car.turn_right()
+                this.car.turn_left()
             }
             else {
-                this.car.turn_left()
+                this.car.turn_right()
             }
             this.car.accelerate()
             if (this.car.velocity >= 0.75) {
