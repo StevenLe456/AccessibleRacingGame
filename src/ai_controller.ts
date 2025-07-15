@@ -7,13 +7,10 @@ export class AIController {
     private car: Car
     private opp: Car
     private obstacles: Entity[]
-    private v_time = 0
     private min_velocity = 0.5
     private max_velocity = 3
     private state: CarState = CarState.CRUISE
     private goal_x = 0
-    private goal_z = 0
-    private flag = false
 
     constructor(c: Car, opp: Car, obs: Entity[]) {
         this.car = c
@@ -25,19 +22,13 @@ export class AIController {
         console.log(this.state)
         if (this.state == CarState.CRUISE) {
             if (this.opp.z - this.car.z >= 100 && this.car.velocity < this.max_velocity) {
-                this.v_time++
-                if (this.v_time % 6 == 0) {
-                    this.car.accelerate()
-                }
+                this.car.accelerate()
             }
             else if ((this.opp.z - this.car.z >= 75 || this.car.z - this.opp.z >= 300) && this.car.velocity > this.min_velocity) {
-                this.v_time++
-                if (this.v_time % 6 == 0) {
-                    this.car.decelerate()
-                }
+                this.car.decelerate()
             }
             else {
-                this.v_time = 0
+                // continue
             }
             if (this.car.rotation > 0) {
                 this.car.turn_left()
@@ -60,13 +51,8 @@ export class AIController {
             this.goal_x = this.obstacles[idx].mesh.position.x
             if (this.goal_x > 60) {
                 this.goal_x = this.obstacles[idx].mesh.position.x
-                this.goal_z = this.obstacles[idx].mesh.position.z
             }
-            this.car.decelerate()
-            if (this.car.velocity <= 0) {
-                this.car.velocity = 0
-                this.state = CarState.OBSTRUCTED_3
-            }
+            this.state = CarState.OBSTRUCTED_3
         }
         // else if (this.state == CarState.OBSTRUCTED_2) {
         //     let theta = Math.atan2(this.goal_x - this.car.x, this.goal_z - this.car.z)

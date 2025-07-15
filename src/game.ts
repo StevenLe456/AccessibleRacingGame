@@ -47,12 +47,12 @@ async function initGame(h1: Head, model: Promise<faceDetection.FaceDetector> , w
     // add stuff to scene
     registerBuiltInLoaders()
     let mesh1 = <Mesh> (await ImportMeshAsync("models/car1.obj", scene)).meshes[0]
-    //let mesh2 = <Mesh> (await ImportMeshAsync("models/car2.obj", scene)).meshes[0]
-    let mesh2 = MeshBuilder.CreateBox("boxen", {width: 2, height: 2, depth: 6})
+    let mesh2 = <Mesh> (await ImportMeshAsync("models/car2.obj", scene)).meshes[0]
+    //let mesh2 = MeshBuilder.CreateBox("boxen", {width: 2, height: 2, depth: 6})
     mesh1.rotate(new Vector3(0, 1, 0), -Math.PI)
     mesh1.refreshBoundingInfo()
     mesh1.computeWorldMatrix(true)
-    mesh2.rotate(new Vector3(0, -1, 0), Math.PI)
+    mesh2.scaling = new Vector3(1, 1, -1)
     mesh2.refreshBoundingInfo()
     mesh2.computeWorldMatrix(true)
     let car1 = new Car(mesh1, -20, 0, 0, scene, 0, "1")
